@@ -1,3 +1,5 @@
+
+
 ---
 
 # 🔁 D Flip-Flop UVM Verification
@@ -6,21 +8,21 @@
 
 ## 📌 Project Overview
 
-This project implements a **Universal Verification Methodology (UVM)** based testbench to verify the functionality of a **D Flip-Flop** design.
+This repository contains a **Universal Verification Methodology (UVM)** based verification environment developed to verify the functional correctness of a **D Flip-Flop**.
 
-The verification environment validates that the output **Q correctly captures the input D on the active clock edge** and holds its value until the next clock edge.
-
-This project is designed for **learning UVM concepts** and **demonstrating verification skills in interviews**.
+The testbench ensures that the output **Q captures the input D at the active clock edge** and holds its value until the next clock edge.
+This project demonstrates a **complete UVM verification flow** and is suitable for **learning purposes and interview presentation**.
 
 ---
 
 ## 🧠 Design Under Test (DUT)
 
 * **Module:** D Flip-Flop
-* **Behavior:**
+* **Functionality:**
 
   * On the rising edge of the clock, output **Q follows input D**
-  * Between clock edges, output remains stable
+  * Output **Q remains stable** between clock edges
+  * Reset initializes the output to a known state
 
 ---
 
@@ -29,43 +31,44 @@ This project is designed for **learning UVM concepts** and **demonstrating verif
 ```
 ├── design.sv          # D Flip-Flop DUT
 ├── interface.sv       # Interface connecting DUT and UVM TB
-├── seq_item.sv        # Transaction definition (D, clk, Q)
+├── seq_item.sv        # Transaction definition
 ├── sequence.sv        # Stimulus generation
-├── sequencer.sv       # Controls sequence flow
+├── sequencer.sv       # Controls sequence execution
 ├── driver.sv          # Drives input D to DUT
 ├── monitor.sv         # Samples DUT output Q
-├── scoreboard.sv      # Checks expected vs actual output
-├── agent.sv           # Driver + Monitor + Sequencer
+├── scoreboard.sv      # Compares expected vs actual output
+├── agent.sv           # Driver, Monitor, Sequencer wrapper
 ├── env.sv             # UVM environment
 ├── test.sv            # Test configuration and execution
-├── testbench.sv       # Top-level testbench
+├── testbench.sv       # Top-level testbench module
 ```
 
 ---
 
 ## ⚙️ UVM Components Used
 
-* **Sequence Item** – Represents D flip-flop transaction
-* **Sequence** – Generates stimulus for input D
-* **Sequencer** – Manages sequence execution
-* **Driver** – Applies stimulus to DUT
-* **Monitor** – Observes DUT output
-* **Scoreboard** – Verifies correctness of output
-* **Agent** – Encapsulates verification components
+* **Sequence Item** – Defines transaction data for D Flip-Flop
+* **Sequence** – Generates randomized stimulus for input D
+* **Sequencer** – Controls sequence flow
+* **Driver** – Drives transactions to the DUT
+* **Monitor** – Observes DUT input/output signals
+* **Scoreboard** – Checks functional correctness
+* **Agent** – Groups driver, monitor, and sequencer
 * **Environment** – Integrates agent and scoreboard
-* **Test** – Controls simulation flow
+* **Test** – Configures and starts the verification process
 
 ---
 
 ## ✅ Verification Strategy
 
-* Randomized input **D** values are generated
-* Driver applies inputs at clock edges
-* Monitor captures DUT output **Q**
-* Scoreboard compares:
+* Apply reset to initialize DUT
+* Generate randomized **D** input values
+* Drive inputs synchronously with the clock
+* Monitor output **Q**
+* Scoreboard validation:
 
-  * **Expected Q = D at previous clock edge**
-  * **Actual Q from DUT**
+  * **Expected Q = D sampled at previous clock edge**
+  * **Actual Q = DUT output**
 
 ---
 
@@ -73,9 +76,9 @@ This project is designed for **learning UVM concepts** and **demonstrating verif
 
 * UVM testbench architecture
 * Transaction-level modeling
-* Constrained-random stimulus
+* Constrained-random stimulus generation
 * Functional checking using scoreboard
-* Reusable and modular verification design
+* Modular and reusable verification components
 
 ---
 
@@ -84,8 +87,10 @@ This project is designed for **learning UVM concepts** and **demonstrating verif
 This project can be simulated using:
 
 * **EDAPlayground**
+* **QuestaSim**
+* **VCS**
 
-Example (tool-dependent):
+Example command (tool-dependent):
 
 ```bash
 vsim -c testbench -do "run -all"
